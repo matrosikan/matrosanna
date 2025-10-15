@@ -1,0 +1,198 @@
+def bubble_sort(arr):
+    """
+    Сортировка обменом (пузырьковая сортировка)
+    
+    Args:
+        arr: список для сортировки
+    
+    Returns:
+        отсортированный список
+    """
+    n = len(arr)
+    
+    # Проходим по всем элементам массива
+    for i in range(n):
+        # Флаг для оптимизации - если не было обменов, массив уже отсортирован
+        swapped = False
+        
+        # Последние i элементов уже на своих местах
+        for j in range(0, n - i - 1):
+            # Сравниваем соседние элементы
+            if arr[j] > arr[j + 1]:
+                # Если текущий элемент больше следующего, меняем их местами
+                arr[j], arr[j + 1] = arr[j + 1], arr[j]
+                swapped = True
+        
+        # Если на этой итерации не было обменов, массив уже отсортирован
+        if not swapped:
+            break
+    
+    return arr
+
+
+def bubble_sort_detailed(arr):
+    """
+    Сортировка обменом с подробным выводом процесса
+    """
+    n = len(arr)
+    print(f"\n=== ПОДРОБНЫЙ ПРОЦЕСС СОРТИРОВКИ ===")
+    print(f"Исходный массив: {arr}")
+    
+    for i in range(n):
+        swapped = False
+        print(f"\n--- Итерация {i + 1} ---")
+        print(f"Текущее состояние: {arr}")
+        print(f"Сравниваем элементы в диапазоне [0...{n - i - 2}]")
+        
+        for j in range(0, n - i - 1):
+            print(f"  Сравниваем arr[{j}]={arr[j]} и arr[{j + 1}]={arr[j + 1]}", end="")
+            
+            if arr[j] > arr[j + 1]:
+                # Обмен элементов
+                arr[j], arr[j + 1] = arr[j + 1], arr[j]
+                swapped = True
+                print(f" -> ОБМЕН! Теперь: {arr}")
+            else:
+                print(f" -> порядок верный")
+        
+        if not swapped:
+            print("Не было обменов - массив отсортирован!")
+            break
+        else:
+            print(f"После итерации {i + 1}: {arr}")
+    
+    print(f"\n=== СОРТИРОВКА ЗАВЕРШЕНА ===")
+    return arr
+
+
+def test_bubble_sort():
+    """Тестирование функции сортировки"""
+    
+    print("=" * 60)
+    print("ТЕСТ 1: Обычная сортировка")
+    print("=" * 60)
+    
+    arr1 = [64, 34, 25, 12, 22, 11, 90]
+    print(f"Исходный массив: {arr1}")
+    result1 = bubble_sort(arr1.copy())
+    print(f"Отсортированный массив: {result1}")
+    
+    print("\n" + "=" * 60)
+    print("ТЕСТ 2: Подробный процесс сортировки")
+    print("=" * 60)
+    
+    arr2 = [5, 1, 4, 2, 8]
+    bubble_sort_detailed(arr2.copy())
+    
+    print("\n" + "=" * 60)
+    print("ТЕСТ 3: Уже отсортированный массив")
+    print("=" * 60)
+    
+    arr3 = [1, 2, 3, 4, 5]
+    print(f"Исходный массив: {arr3}")
+    result3 = bubble_sort(arr3.copy())
+    print(f"После сортировки: {result3}")
+    
+    print("\n" + "=" * 60)
+    print("ТЕСТ 4: Массив в обратном порядке")
+    print("=" * 60)
+    
+    arr4 = [5, 4, 3, 2, 1]
+    print(f"Исходный массив: {arr4}")
+    result4 = bubble_sort(arr4.copy())
+    print(f"После сортировки: {result4}")
+    
+    print("\n" + "=" * 60)
+    print("ТЕСТ 5: Массив с повторяющимися элементами")
+    print("=" * 60)
+    
+    arr5 = [3, 1, 4, 1, 5, 9, 2, 6, 5]
+    print(f"Исходный массив: {arr5}")
+    result5 = bubble_sort(arr5.copy())
+    print(f"После сортировки: {result5}")
+
+
+def visualize_sorting_process():
+    """Визуализация процесса сортировки по шагам"""
+    
+    print("\n" + "=" * 60)
+    print("ВИЗУАЛИЗАЦИЯ ПРОЦЕССА СОРТИРОВКИ [64, 34, 25, 12, 22, 11]")
+    print("=" * 60)
+    
+    arr = [64, 34, 25, 12, 22, 11]
+    n = len(arr)
+    
+    print(f"Начальное состояние: {arr}")
+    
+    for i in range(n):
+        swapped = False
+        print(f"\n--- Проход {i + 1} ---")
+        
+        for j in range(0, n - i - 1):
+            marker = ["  "] * n
+            marker[j] = "←→"  # Показываем текущие сравниваемые элементы
+            
+            print(f"Сравниваем позиции {j} и {j + 1}: {arr}")
+            print(f"              {''.join(marker)}")
+            
+            if arr[j] > arr[j + 1]:
+                arr[j], arr[j + 1] = arr[j + 1], arr[j]
+                swapped = True
+                print(f"Обмен! Новый порядок: {arr}")
+            else:
+                print(f"Порядок верный")
+        
+        if not swapped:
+            print("Массив отсортирован!")
+            break
+    
+    print(f"\nФинальный результат: {arr}")
+
+
+# Дополнительная версия с подсчетом операций
+def bubble_sort_with_stats(arr):
+    """Сортировка с подсчетом операций для анализа"""
+    n = len(arr)
+    comparisons = 0  # Счетчик сравнений
+    swaps = 0        # Счетчик обменов
+    
+    for i in range(n):
+        swapped = False
+        for j in range(0, n - i - 1):
+            comparisons += 1
+            if arr[j] > arr[j + 1]:
+                arr[j], arr[j + 1] = arr[j + 1], arr[j]
+                swaps += 1
+                swapped = True
+        
+        if not swapped:
+            break
+    
+    return arr, comparisons, swaps
+
+
+if __name__ == "__main__":
+    # Запуск тестов
+    test_bubble_sort()
+    
+    # Визуализация процесса
+    visualize_sorting_process()
+    
+    # Тест со статистикой
+    print("\n" + "=" * 60)
+    print("СТАТИСТИКА ПРОИЗВОДИТЕЛЬНОСТИ")
+    print("=" * 60)
+    
+    test_arrays = [
+        [64, 34, 25, 12, 22, 11],
+        [1, 2, 3, 4, 5],
+        [5, 4, 3, 2, 1],
+        [3, 1, 4, 1, 5, 9, 2, 6, 5]
+    ]
+    
+    for i, arr in enumerate(test_arrays, 1):
+        original = arr.copy()
+        sorted_arr, comparisons, swaps = bubble_sort_with_stats(arr.copy())
+        print(f"\nТест {i}: {original}")
+        print(f"Сравнений: {comparisons}, Обменов: {swaps}")
+        print(f"Результат: {sorted_arr}")
